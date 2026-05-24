@@ -1,0 +1,25 @@
+# Multi-Agent Supervisor — Docker Compose
+# 启动: docker compose up -d
+# 查看日志: docker compose logs -f
+# 停止: docker compose down
+
+services:
+  multi-agent:
+    build: .
+    container_name: multi-agent-supervisor
+    ports:
+      - "8003:8003"
+    env_file:
+      - .env
+    volumes:
+      # 持久化 Chinook 数据库 (避免每次重启重新下载)
+      - ./data:/app/data
+      # 持久化决策日志
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8003/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

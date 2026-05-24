@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+
+# Python
+.venv
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.idea
+.vscode
+*.swp
+
+# Environment (用 docker-compose env_file 注入)
+.env
+
+# Data (运行时生成)
+Chinook_Sqlite.sql
+*.db
+
+# Jupyter
+*.ipynb
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db

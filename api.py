@@ -39,6 +39,11 @@ def ask_agent(q: Question):
     return Response(question=q.question, customer_id=q.customer_id, answer=answer)
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok", "service": "multi-agent-supervisor"}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8003)
