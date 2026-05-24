@@ -52,7 +52,8 @@ in_memory_store = InMemoryStore()
 
 from db import get_database
 
-print("Setting up Chinook database (SQLite WAL / PostgreSQL)...")
+import sys as _sys
+print("Setting up Chinook database (SQLite WAL / PostgreSQL)...", file=_sys.stderr)
 engine = get_database()
 # 通过 SQLAlchemy engine 创建 LangChain 包装的 SQLDatabase 实例
 from langchain_community.utilities import SQLDatabase

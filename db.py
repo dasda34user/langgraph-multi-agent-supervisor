@@ -19,7 +19,7 @@ SQLite WAL 模式:
     SQLite 默认 journal_mode=delete → WAL 支持多读一写, 适合 Agent 的查询密集型场景。
 """
 
-import os, sqlite3, urllib.request
+import os, sys, sqlite3, urllib.request
 from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
@@ -35,7 +35,7 @@ def _setup_sqlite(db_url: str):
 
     sql_path = Path("Chinook_Sqlite.sql")
     if not sql_path.exists():
-        print("Downloading Chinook database...")
+        print("Downloading Chinook database...", file=sys.stderr)
         urllib.request.urlretrieve(CHINOOK_URL, sql_path)
 
     if ":memory:" in db_url:
