@@ -50,25 +50,13 @@ in_memory_store = InMemoryStore()
 # 2. Chinook 数据库
 # ═══════════════════════════════════════════════════════════
 
-CHINOOK_URL = ("https://raw.githubusercontent.com/lerocha/chinook-database/"
-               "master/ChinookDatabase/DataSources/Chinook_Sqlite.sql")
+from db import get_database
 
-def get_chinook_db():
-    from langchain_community.utilities import SQLDatabase
-    sql_path = Path("Chinook_Sqlite.sql")
-    if not sql_path.exists():
-        print("Downloading Chinook database...")
-        urllib.request.urlretrieve(CHINOOK_URL, sql_path)
-    connection = sqlite3.connect(":memory:", check_same_thread=False)
-    connection.executescript(sql_path.read_text(encoding="utf-8"))
-    engine = create_engine(
-        "sqlite://", creator=lambda: connection,
-        poolclass=StaticPool, connect_args={"check_same_thread": False}
-    )
-    return SQLDatabase(engine=engine)
-
-print("Setting up Chinook database...")
-db = get_chinook_db()
+print("Setting up Chinook database (SQLite WAL / PostgreSQL)...")
+engine = get_database()
+# 通过 SQLAlchemy engine 创建 LangChain 包装的 SQLDatabase 实例
+from langchain_community.utilities import SQLDatabase
+db = SQLDatabase(engine=engine)
 
 # ═══════════════════════════════════════════════════════════
 # 3. State — 多 Agent 共享状态
